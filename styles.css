@@ -176,11 +176,16 @@ img.klub-grb { object-fit: contain; background: transparent; }
   transition: all 0.2s ease;
 }
 
-/* YouTube — crven na hover */
-.social-icon.youtube-icon:hover {
+/* YouTube — uvijek crven, tamniji na hover */
+.social-icon.youtube-icon {
   background: var(--youtube-red);
   color: #fff;
   border-color: var(--youtube-red);
+}
+.social-icon.youtube-icon:hover {
+  background: var(--youtube-red-dark);
+  color: #fff;
+  border-color: var(--youtube-red-dark);
   transform: translateY(-2px);
 }
 
@@ -1006,16 +1011,16 @@ tbody tr:last-child td { border-bottom: none; }
 .seo-footer-text .yt-button,
 .seo-footer-text .yt-button:link,
 .seo-footer-text .yt-button:visited {
-  background: var(--card-bg-2);
-  color: var(--text-muted);
-  border-color: var(--border);
+  background: var(--youtube-red);
+  color: #fff;
+  border-color: var(--youtube-red);
   text-decoration: none;
 }
 .seo-footer-text .yt-button:hover,
 .seo-footer-text .yt-button:focus {
-  background: var(--youtube-red);
+  background: var(--youtube-red-dark);
   color: #fff;
-  border-color: var(--youtube-red);
+  border-color: var(--youtube-red-dark);
   text-decoration: none;
   transform: translateY(-2px);
 }

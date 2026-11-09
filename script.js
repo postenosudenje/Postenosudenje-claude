@@ -888,8 +888,8 @@ function nacrtajZutiChart() {
     vrijednosti = kola.map(k => poKolu[k]);
   }
   const naslov = document.getElementById("zutiChartNaslov");
-  if (naslov) naslov.textContent = ukupno ? "Žuti kartoni po sezoni" : "Žuti kartoni po kolu";
-  canvas.setAttribute("aria-label", ukupno ? "Grafikon žutih kartona po sezoni" : "Grafikon žutih kartona po kolu");
+  if (naslov) naslov.textContent = ukupno ? "Žuti kartoni po sezonama" : "Žuti kartoni po kolu";
+  canvas.setAttribute("aria-label", ukupno ? "Grafikon žutih kartona po sezonama" : "Grafikon žutih kartona po kolu");
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (zutiChartInstance) zutiChartInstance.destroy();
 
