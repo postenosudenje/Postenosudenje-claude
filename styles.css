@@ -1463,3 +1463,51 @@ p { text-wrap: pretty; }
 
 html { scroll-behavior: smooth; accent-color: var(--yellow); scrollbar-color: var(--border-strong) transparent; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+.seo-summary { margin-top: 2rem; padding: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius); background: color-mix(in srgb, var(--card-bg) 70%, transparent); }
+.seo-summary h2 { font-family: var(--font-display); font-size: 1.15rem; margin-bottom: .75rem; }
+.seo-summary .tablica-wrap { overflow-x: auto; }
+.seo-summary table { width: 100%; border-collapse: collapse; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.seo-summary th, .seo-summary td { padding: .45rem .6rem; text-align: right; border-bottom: 1px solid var(--border); }
+.seo-summary th:first-child, .seo-summary td:first-child { text-align: left; }
+.updated-note { color: var(--text-muted); font-size: .8rem; margin-bottom: .75rem; }
+:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; border-radius: 4px; }
+
+/* ===== DOTJERIVANJE: razmaci i tipografija (stil ostaje isti) ===== */
+:root { --space-2: .8rem; --space-4: 2rem; }
+body { line-height: 1.55; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+/* Naslovi i uvod */
+.hero-intro { padding: clamp(1.25rem, 3vw, 2rem); margin-bottom: var(--space-4); }
+.hero-intro-title { font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem); line-height: 1.1; }
+.hero-intro-text { font-size: clamp(.95rem, .9rem + .25vw, 1.05rem); line-height: 1.65; max-width: 60ch; }
+
+/* Navigacija: veća meta za dodir, ujednačen razmak */
+.menu-wrapper { gap: var(--space-2); margin-bottom: var(--space-4); }
+.menu-item { padding: .65rem 1rem; font-size: .9rem; min-height: 44px; }
+
+/* Kartice */
+.summary-cards { gap: 1rem; margin-bottom: var(--space-4); }
+.card { padding: 1.25rem 1.4rem; }
+.card h3 { line-height: 1.3; letter-spacing: .01em; }
+.card .broj { line-height: 1; letter-spacing: -.02em; }
+.matches-grid { gap: 1rem; }
+
+/* Tablice: više zraka, čitljiviji zaglavlja */
+th { padding: .9rem 1rem; font-size: .72rem; letter-spacing: .06em; }
+td { padding: .9rem 1rem; line-height: 1.4; }
+
+/* Modal */
+.modal-title-text h2 { line-height: 1.2; text-wrap: balance; }
+
+/* Podnožje: kraće retke lakše je čitati */
+.seo-footer-text { max-width: 70ch; margin-inline: auto; line-height: 1.7; color: var(--text-muted); }
+.seo-footer-text h2 { font-size: 1.1rem; margin-bottom: .8rem; color: var(--text); }
+.seo-footer-text p + p { margin-top: .8rem; }
+
+@media (max-width: 640px) {
+  .summary-cards, .matches-grid { gap: .75rem; }
+  .card { padding: 1rem 1.1rem; }
+  th, td { padding: .7rem .6rem; }
+  .hero-intro-text { max-width: none; }
+}
