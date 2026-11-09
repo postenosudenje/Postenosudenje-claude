@@ -865,24 +865,31 @@ function sazetak() {
 }
 
 function nacrtajZutiChart() {
-  const blok = document.getElementById("zutiChartBlok");
-  const sakrij = TRENUTNA_SEZONA === 'UKUPNO';
-  if (blok) blok.hidden = sakrij;
-  if (sakrij) {
-    if (zutiChartInstance) { zutiChartInstance.destroy(); zutiChartInstance = null; }
-    return;
-  }
+  const ukupno = TRENUTNA_SEZONA === 'UKUPNO';
   const canvas = document.getElementById("zutiChart");
   if (!canvas || typeof Chart === 'undefined') return;
-  const poKolu = {};
-  UTakmiceKompletne.forEach(u => {
-    const k = num(u.Kolo);
-    if (k < 1) return;
-    if (!poKolu[k]) poKolu[k] = 0;
-    poKolu[k] += num(u["Žuti D"]) + num(u["Žuti G"]);
-  });
-  const kola = Object.keys(poKolu).map(Number).sort((a,b)=>a-b);
-  const vrijednosti = kola.map(k => poKolu[k]);
+  const zuti = u => num(u["Žuti D"]) + num(u["Žuti G"]);
+  let labels, vrijednosti;
+  if (ukupno) {
+    const poSezoni = {};
+    UTakmice.forEach(u => { if (u._sezona) (poSezoni[u._sezona] ||= []).push(u); });
+    const sezone = SEZONE.filter(s => s.url && poSezoni[s.id]).reverse(); // kronološki
+    labels = sezone.map(s => s.naziv);
+    vrijednosti = sezone.map(s => filtrirajKompletneKola(poSezoni[s.id]).reduce((z, u) => z + zuti(u), 0));
+  } else {
+    const poKolu = {};
+    UTakmiceKompletne.forEach(u => {
+      const k = num(u.Kolo);
+      if (k < 1) return;
+      poKolu[k] = (poKolu[k] || 0) + zuti(u);
+    });
+    const kola = Object.keys(poKolu).map(Number).sort((a, b) => a - b);
+    labels = kola.map(k => `K${k}`);
+    vrijednosti = kola.map(k => poKolu[k]);
+  }
+  const naslov = document.getElementById("zutiChartNaslov");
+  if (naslov) naslov.textContent = ukupno ? "Žuti kartoni po sezoni" : "Žuti kartoni po kolu";
+  canvas.setAttribute("aria-label", ukupno ? "Grafikon žutih kartona po sezoni" : "Grafikon žutih kartona po kolu");
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (zutiChartInstance) zutiChartInstance.destroy();
 
@@ -899,9 +906,9 @@ function nacrtajZutiChart() {
     ? 'rgba(184,134,11,0.25)' : 'rgba(245,197,24,0.35)');
   gradient.addColorStop(1, 'rgba(245,197,24,0.02)');
   zutiChartInstance = new Chart(ctx, {
-    type: 'line',
+    type: ukupno ? 'bar' : 'line',
     data: {
-      labels: kola.map(k => `K${k}`),
+      labels,
       datasets: [{
         label: 'Žuti kartoni',
         data: vrijednosti,
@@ -914,7 +921,8 @@ function nacrtajZutiChart() {
         pointHoverRadius: 7,
         pointBackgroundColor: yellowColor,
         pointBorderColor: borderColor,
-        pointBorderWidth: 2
+        pointBorderWidth: 2,
+        ...(ukupno ? { backgroundColor: yellowColor, borderRadius: 8, maxBarThickness: 90 } : {})
       }]
     },
     options: {
