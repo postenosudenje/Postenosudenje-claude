@@ -109,7 +109,7 @@ function grbHtml(klub, size = "") {
   const url = getGrbUrl(klub);
   const sizeClass = size ? " " + size : "";
   if (url) {
-    return `<img src="${url}" alt="Grb ${klub}" class="klub-grb${sizeClass}" loading="lazy" decoding="async" onerror="this.outerHTML='<span class=\\'klub-grb fallback${sizeClass}\\'><i class=\\'fas fa-shield-alt\\'></i></span>'">`;
+    return `<img src="${url}" alt="Grb ${escapeHtml(klub)}" class="klub-grb${sizeClass}" loading="lazy" decoding="async" onerror="this.outerHTML='<span class=\\'klub-grb fallback${sizeClass}\\'><i class=\\'fas fa-shield-alt\\'></i></span>'">`;
   }
   return `<span class="klub-grb fallback${sizeClass}"><i class="fas fa-shield-alt" aria-hidden="true"></i></span>`;
 }
@@ -416,7 +416,7 @@ function prikaziModalKlub(klub) {
 
   const grbUrl = getGrbUrl(klub);
   document.getElementById("modalIcon").innerHTML = grbUrl
-    ? `<img src="${grbUrl}" alt="Grb ${klub}" onerror="this.outerHTML='<i class=\\'fas fa-shield-alt\\'></i>'">`
+    ? `<img src="${grbUrl}" alt="Grb ${escapeHtml(klub)}" onerror="this.outerHTML='<i class=\\'fas fa-shield-alt\\'></i>'">`
     : '<i class="fas fa-shield-alt" aria-hidden="true"></i>';
   document.getElementById("modalTitle").textContent = klub;
   const sezonaInfo = SEZONE.find(s => s.id === TRENUTNA_SEZONA);
@@ -452,7 +452,7 @@ function prikaziModalKlub(klub) {
             const pozStr = Object.entries(s.pozicije).map(([p, n]) => n > 1 ? `${p} ×${n}` : p).join(", ");
             return `
               <div class="modal-list-item" data-open="sudac" data-name="${escapeHtml(s.ime)}">
-                <div class="item-name"><i class="fas fa-user-tie" style="color:var(--yellow);opacity:0.7;"></i> ${s.ime}<span class="item-role">${pozStr}</span></div>
+                <div class="item-name"><i class="fas fa-user-tie" style="color:var(--yellow);opacity:0.7;"></i> ${escapeHtml(s.ime)}<span class="item-role">${pozStr}</span></div>
                 <div class="item-badges">
                   <span class="item-badge" style="color:var(--blue);"><i class="fas fa-futbol"></i> ${s.utakmica}</span>
                   ${s.zuti > 0 ? `<span class="item-badge">${IKONA_ZUTI} ${s.zuti}</span>` : ''}
@@ -574,7 +574,7 @@ function prikaziModalSudac(ime) {
         <div class="modal-list">
           ${kluboviSort.map(k => `
             <div class="modal-list-item" data-open="klub" data-name="${escapeHtml(k.klub)}">
-              <div class="item-name">${grbHtml(k.klub, 'srednji')} ${k.klub}<span class="item-role">${k.pozicijeStr}</span></div>
+              <div class="item-name">${grbHtml(k.klub, 'srednji')} ${escapeHtml(k.klub)}<span class="item-role">${k.pozicijeStr}</span></div>
               <div class="item-badges">
                 ${k.zuti > 0 ? `<span class="item-badge">${IKONA_ZUTI} ${k.zuti}</span>` : ''}
                 ${k.crveni > 0 ? `<span class="item-badge">${IKONA_CRVENI} ${k.crveni}</span>` : ''}
@@ -1128,12 +1128,12 @@ async function prikaziSuca(ime) {
   const sezonaNaziv = sezonaInfo ? sezonaInfo.naziv : sezona;
 
   if (broj === 0) {
-    document.getElementById("sudacIme").innerHTML = `<span class="klikabilno" data-open="sudac" data-name="${escapeHtml(ime)}">${ime}</span> <span style="font-size:0.75rem; color:var(--text-muted);">— ${sezonaNaziv}</span>`;
+    document.getElementById("sudacIme").innerHTML = `<span class="klikabilno" data-open="sudac" data-name="${escapeHtml(ime)}">${escapeHtml(ime)}</span> <span style="font-size:0.75rem; color:var(--text-muted);">— ${sezonaNaziv}</span>`;
     document.getElementById("statsGrid").innerHTML = `<div class="stat-item" style="grid-column:1/-1; text-align:center; padding:2rem; color:var(--text-muted);">Nema podataka za ovog suca u sezoni ${sezonaNaziv}.</div>`;
     return;
   }
 
-  document.getElementById("sudacIme").innerHTML = `<span class="klikabilno" data-open="sudac" data-name="${escapeHtml(ime)}">${ime}</span> <span style="font-size:0.75rem; color:var(--text-muted);">— ${sezonaNaziv}</span>`;
+  document.getElementById("sudacIme").innerHTML = `<span class="klikabilno" data-open="sudac" data-name="${escapeHtml(ime)}">${escapeHtml(ime)}</span> <span style="font-size:0.75rem; color:var(--text-muted);">— ${sezonaNaziv}</span>`;
   const n = broj || 1;
   document.getElementById("statsGrid").innerHTML = `
     <div class="stat-item"><div class="label">${IKONA_ZUTI} Žuti</div><div class="value yellow">${zuti}</div><div class="per-match">${(zuti/n).toFixed(2)} / utakmica</div></div>
@@ -1155,7 +1155,7 @@ async function prikaziSuca(ime) {
   document.getElementById("sudacKluboviList").innerHTML = kluboviSort.length > 0
     ? kluboviSort.map(k => `
       <div class="modal-list-item" data-open="klub" data-name="${escapeHtml(k.klub)}">
-        <div class="item-name">${grbHtml(k.klub, 'srednji')} ${k.klub}<span class="item-role">${k.pozicijeStr}</span></div>
+        <div class="item-name">${grbHtml(k.klub, 'srednji')} ${escapeHtml(k.klub)}<span class="item-role">${k.pozicijeStr}</span></div>
         <div class="item-badges">
           ${k.zuti > 0 ? `<span class="item-badge">${IKONA_ZUTI} ${k.zuti}</span>` : ''}
           ${k.crveni > 0 ? `<span class="item-badge">${IKONA_CRVENI} ${k.crveni}</span>` : ''}
@@ -1213,12 +1213,12 @@ async function prikaziKlub(klub) {
   const sezonaNaziv = sezonaInfo ? sezonaInfo.naziv : sezona;
 
   if (broj === 0) {
-    document.getElementById("klubIme").innerHTML = `${grbHtml(klub)} <span class="klikabilno" data-open="klub" data-name="${escapeHtml(klub)}">${klub}</span> <span style="font-size:0.75rem; color:var(--text-muted);">— ${sezonaNaziv}</span>`;
+    document.getElementById("klubIme").innerHTML = `${grbHtml(klub)} <span class="klikabilno" data-open="klub" data-name="${escapeHtml(klub)}">${escapeHtml(klub)}</span> <span style="font-size:0.75rem; color:var(--text-muted);">— ${sezonaNaziv}</span>`;
     document.getElementById("klubStatsGrid").innerHTML = `<div class="stat-item" style="grid-column:1/-1; text-align:center; padding:2rem; color:var(--text-muted);">Nema podataka za ovaj klub u sezoni ${sezonaNaziv}.</div>`;
     return;
   }
 
-  document.getElementById("klubIme").innerHTML = `${grbHtml(klub)} <span class="klikabilno" data-open="klub" data-name="${escapeHtml(klub)}">${klub}</span> <span style="font-size:0.75rem; color:var(--text-muted);">— ${sezonaNaziv}</span>`;
+  document.getElementById("klubIme").innerHTML = `${grbHtml(klub)} <span class="klikabilno" data-open="klub" data-name="${escapeHtml(klub)}">${escapeHtml(klub)}</span> <span style="font-size:0.75rem; color:var(--text-muted);">— ${sezonaNaziv}</span>`;
   const n = broj || 1;
   document.getElementById("klubStatsGrid").innerHTML = `
     <div class="stat-item"><div class="label">${IKONA_ZUTI} Žuti</div><div class="value yellow">${zuti}</div><div class="per-match">${(zuti/n).toFixed(2)} / utakmica</div></div>
@@ -1236,7 +1236,7 @@ async function prikaziKlub(klub) {
     const pozStr = Object.entries(s.pozicije).map(([p, cnt]) => cnt > 1 ? `${p} ×${cnt}` : p).join(", ");
     return `
       <div class="modal-list-item" data-open="sudac" data-name="${escapeHtml(s.ime)}">
-        <div class="item-name"><i class="fas fa-user-tie" style="color:var(--yellow);opacity:0.7;"></i> ${s.ime}<span class="item-role">${pozStr}</span></div>
+        <div class="item-name"><i class="fas fa-user-tie" style="color:var(--yellow);opacity:0.7;"></i> ${escapeHtml(s.ime)}<span class="item-role">${pozStr}</span></div>
         <div class="item-badges">
           <span class="item-badge" style="color:var(--blue);"><i class="fas fa-futbol"></i> ${s.utakmica}</span>
           ${s.zuti > 0 ? `<span class="item-badge">${IKONA_ZUTI} ${s.zuti}</span>` : ''}
@@ -1275,14 +1275,14 @@ function prikaziKolo(kolo) {
     const g = u["Gost"] || "";
     card.innerHTML = `
       <div class="match-teams">
-        <span class="team-btn" data-open="klub" data-name="${escapeHtml(d)}">${grbHtml(u["Domaćin"])} ${u["Domaćin"]}</span>
+        <span class="team-btn" data-open="klub" data-name="${escapeHtml(d)}">${grbHtml(u["Domaćin"])} ${escapeHtml(u["Domaćin"])}</span>
         <span class="vs">vs</span>
-        <span class="team-btn away" data-open="klub" data-name="${escapeHtml(g)}">${u["Gost"]} ${grbHtml(u["Gost"])}</span>
+        <span class="team-btn away" data-open="klub" data-name="${escapeHtml(g)}">${escapeHtml(u["Gost"])} ${grbHtml(u["Gost"])}</span>
       </div>
       <div class="match-meta">
-        <div class="row"><i class="fas fa-user-tie icon-glavni"></i><span><span class="sudac-label">Glavni:</span> <span class="sudac-ime">${u["Glavni sudac"]}</span></span></div>
-        <div class="row"><i class="fas fa-flag icon-pomocni"></i><span><span class="sudac-label">Pomoćni:</span> <span class="sudac-ime">${u["Pomoćni 1"]}, ${u["Pomoćni 2"]}</span></span></div>
-        <div class="row"><i class="fas fa-video icon-var"></i><span><span class="sudac-label">VAR:</span> <span class="sudac-ime">${u["VAR"]}</span> <span class="sudac-label" style="margin-left:8px;">AVAR:</span> <span class="sudac-ime">${u["AVAR"]}</span></span></div>
+        <div class="row"><i class="fas fa-user-tie icon-glavni"></i><span><span class="sudac-label">Glavni:</span> <span class="sudac-ime">${escapeHtml(u["Glavni sudac"])}</span></span></div>
+        <div class="row"><i class="fas fa-flag icon-pomocni"></i><span><span class="sudac-label">Pomoćni:</span> <span class="sudac-ime">${escapeHtml(u["Pomoćni 1"])}, ${escapeHtml(u["Pomoćni 2"])}</span></span></div>
+        <div class="row"><i class="fas fa-video icon-var"></i><span><span class="sudac-label">VAR:</span> <span class="sudac-ime">${escapeHtml(u["VAR"])}</span> <span class="sudac-label" style="margin-left:8px;">AVAR:</span> <span class="sudac-ime">${escapeHtml(u["AVAR"])}</span></span></div>
       </div>
       <div class="match-stats-row">
         <span class="match-stat-badge">${IKONA_ZUTI} ${zD+zG}</span>
@@ -1337,7 +1337,7 @@ function renderKlubTablicu() {
     const tr = document.createElement("tr");
     
     tr.innerHTML = `
-      <td><span class="klub-badge" data-open="klub" data-name="${escapeHtml(d.naziv)}">${grbHtml(d.naziv)} ${d.naziv} <i class="fas fa-arrow-up-right-from-square"></i></span></td>
+      <td><span class="klub-badge" data-open="klub" data-name="${escapeHtml(d.naziv)}">${grbHtml(d.naziv)} ${escapeHtml(d.naziv)} <i class="fas fa-arrow-up-right-from-square"></i></span></td>
       <td style="color:var(--yellow); font-weight:700;">${d.zuti}</td>
       <td style="color:var(--red-soft); font-weight:700;">${d.crveni}</td>
       <td style="color:var(--blue); font-weight:600;">${d.penal}</td>
@@ -1671,3 +1671,41 @@ document.addEventListener('click', e => {
   if (!t) return;
   (t.dataset.open === 'sudac' ? prikaziModalSudac : prikaziModalKlub)(t.dataset.name);
 });
+
+
+// Prikaz vremena zadnjeg ažuriranja podataka
+fetch('data/meta.json').then(r => r.ok ? r.json() : null).then(m => {
+  const el = document.getElementById('zadnjeAzurirano');
+  if (!m || !el) return;
+  el.textContent = 'Podaci ažurirani: ' + new Date(m.updated).toLocaleString('hr-HR', { dateStyle: 'medium', timeStyle: 'short' });
+  el.hidden = false;
+}).catch(() => {});
+
+// Meniji: strelice, vidljiv aktivni gumb, aria-pressed za sezone
+(() => {
+  const menu = document.getElementById('mainMenu');
+  const season = document.getElementById('seasonPicker');
+  if (!menu) return;
+  const mirno = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pokazi = el => el.scrollIntoView?.({ inline: 'center', block: 'nearest', behavior: mirno ? 'auto' : 'smooth' });
+  const pratiKlasu = (el, fn) => new MutationObserver(fn).observe(el, { subtree: true, attributes: true, attributeFilter: ['class'] });
+
+  menu.addEventListener('keydown', e => {
+    const items = [...menu.querySelectorAll('.menu-item')];
+    const i = items.indexOf(document.activeElement);
+    if (i < 0) return;
+    const korak = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+    const n = korak ? (i + korak + items.length) % items.length : e.key === 'Home' ? 0 : e.key === 'End' ? items.length - 1 : -1;
+    if (n < 0) return;
+    e.preventDefault();
+    items[n].focus();
+  });
+  pratiKlasu(menu, () => { const a = menu.querySelector('.menu-item.active'); if (a) pokazi(a); });
+
+  if (season) {
+    const sync = () => season.querySelectorAll('.menu-item').forEach(b =>
+      b.setAttribute('aria-pressed', b.classList.contains('active') ? 'true' : 'false'));
+    sync();
+    pratiKlasu(season, sync);
+  }
+})();

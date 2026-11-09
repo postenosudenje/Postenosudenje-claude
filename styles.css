@@ -1511,3 +1511,26 @@ td { padding: .9rem 1rem; line-height: 1.4; }
   th, td { padding: .7rem .6rem; }
   .hero-intro-text { max-width: none; }
 }
+
+/* ===== MENIJI: modernizacija (izgled isti, ponašanje bolje) ===== */
+.main-menu, .season-menu { justify-content: safe center; scrollbar-width: none; scroll-snap-type: x proximity; overscroll-behavior-x: contain; }
+.menu-item { scroll-snap-align: center; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: color .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .12s ease; }
+.menu-item:active { transform: scale(.97); }
+.menu-item:focus-visible { outline: 2px solid var(--yellow); outline-offset: -2px; }
+
+/* Na ostalim sekcijama meni ostaje vidljiv dok se listaju dugačke tablice */
+body:not([data-section="pregled"]) .menu-wrapper { position: sticky; top: max(.5rem, env(safe-area-inset-top)); }
+body:not([data-section="pregled"]) .main-menu { box-shadow: var(--shadow-md); }
+
+/* iOS ne zumira polja kad je font barem 16px */
+.modern-select select, .combobox input { min-height: 44px; }
+@media (max-width: 640px) {
+  .modern-select select, .combobox input { font-size: 16px; }
+  .menu-item { padding: .6rem .85rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .season-menu { animation: none; }
+  .menu-item { transition: none; }
+  .menu-item:active { transform: none; }
+}
