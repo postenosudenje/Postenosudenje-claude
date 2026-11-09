@@ -86,7 +86,6 @@
 </head>
 <body>
 
-<noscript><p style="padding:1rem;text-align:center">Za prikaz statistike potrebno je uključiti JavaScript.</p></noscript>
 <a href="#main-content" class="skip-link">Preskoči na glavni sadržaj</a>
 
 <div class="container">
@@ -200,11 +199,13 @@
         </table>
       </div>
 
-      <h2 class="section-title">
-        <i class="fas fa-chart-line" aria-hidden="true"></i> Žuti kartoni po kolu
-      </h2>
-      <div class="chart-wrapper">
-        <canvas id="zutiChart" aria-label="Grafikon žutih kartona po kolu" role="img"></canvas>
+      <div id="zutiChartBlok">
+        <h2 class="section-title">
+          <i class="fas fa-chart-line" aria-hidden="true"></i> Žuti kartoni po kolu
+        </h2>
+        <div class="chart-wrapper">
+          <canvas id="zutiChart" aria-label="Grafikon žutih kartona po kolu" role="img"></canvas>
+        </div>
       </div>
     </section>
 
@@ -391,7 +392,11 @@
   </div>
   </main>
 
+  <!-- PRERENDER:START -->
+  <!-- PRERENDER:END -->
+
   <footer class="seo-footer-text" role="contentinfo">
+    <p id="zadnjeAzurirano" class="updated-note" hidden></p>
     <h2>O platformi Pošteno suđenje</h2>
     <p>
       <strong>Pošteno suđenje</strong> okuplja i analizira podatke o sudačkim odlukama u

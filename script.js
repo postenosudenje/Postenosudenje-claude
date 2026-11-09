@@ -865,6 +865,13 @@ function sazetak() {
 }
 
 function nacrtajZutiChart() {
+  const blok = document.getElementById("zutiChartBlok");
+  const sakrij = TRENUTNA_SEZONA === 'UKUPNO';
+  if (blok) blok.hidden = sakrij;
+  if (sakrij) {
+    if (zutiChartInstance) { zutiChartInstance.destroy(); zutiChartInstance = null; }
+    return;
+  }
   const canvas = document.getElementById("zutiChart");
   if (!canvas || typeof Chart === 'undefined') return;
   const poKolu = {};
@@ -1680,32 +1687,3 @@ fetch('data/meta.json').then(r => r.ok ? r.json() : null).then(m => {
   el.textContent = 'Podaci ažurirani: ' + new Date(m.updated).toLocaleString('hr-HR', { dateStyle: 'medium', timeStyle: 'short' });
   el.hidden = false;
 }).catch(() => {});
-
-// Meniji: strelice, vidljiv aktivni gumb, aria-pressed za sezone
-(() => {
-  const menu = document.getElementById('mainMenu');
-  const season = document.getElementById('seasonPicker');
-  if (!menu) return;
-  const mirno = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const pokazi = el => el.scrollIntoView?.({ inline: 'center', block: 'nearest', behavior: mirno ? 'auto' : 'smooth' });
-  const pratiKlasu = (el, fn) => new MutationObserver(fn).observe(el, { subtree: true, attributes: true, attributeFilter: ['class'] });
-
-  menu.addEventListener('keydown', e => {
-    const items = [...menu.querySelectorAll('.menu-item')];
-    const i = items.indexOf(document.activeElement);
-    if (i < 0) return;
-    const korak = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
-    const n = korak ? (i + korak + items.length) % items.length : e.key === 'Home' ? 0 : e.key === 'End' ? items.length - 1 : -1;
-    if (n < 0) return;
-    e.preventDefault();
-    items[n].focus();
-  });
-  pratiKlasu(menu, () => { const a = menu.querySelector('.menu-item.active'); if (a) pokazi(a); });
-
-  if (season) {
-    const sync = () => season.querySelectorAll('.menu-item').forEach(b =>
-      b.setAttribute('aria-pressed', b.classList.contains('active') ? 'true' : 'false'));
-    sync();
-    pratiKlasu(season, sync);
-  }
-})();
