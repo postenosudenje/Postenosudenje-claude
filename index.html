@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+
+<title>Pošteno suđenje | Analiza sudaca, klubova i utakmica HNL-a</title>
+<meta name="description" content="Statistika suđenja u SuperSport HNL-u: kartoni, penali i VAR odluke po sucu i klubu, ažurirano nakon svakog kola.">
+<meta name="author" content="Pošteno suđenje">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f5f6f8" media="(prefers-color-scheme: light)">
+
+<link rel="canonical" href="https://postenosudenje.com/">
+<link rel="alternate" hreflang="hr" href="https://postenosudenje.com/">
+<link rel="alternate" hreflang="x-default" href="https://postenosudenje.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pošteno suđenje">
+<meta property="og:title" content="Pošteno suđenje | Analiza sudaca HNL-a">
+<meta property="og:description" content="Statistika suđenja u SuperSport HNL-u.">
+<meta property="og:image" content="https://i.imgur.com/TMWFtd5.png">
+<meta property="og:image:alt" content="Pošteno suđenje – logo">
+<meta property="og:url" content="https://postenosudenje.com/">
+<meta property="og:locale" content="hr_HR">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pošteno suđenje | Analiza sudaca HNL-a">
+<meta name="twitter:description" content="Statistika suđenja u SuperSport HNL-u.">
+<meta name="twitter:image" content="https://i.imgur.com/TMWFtd5.png">
+<meta name="twitter:image:alt" content="Pošteno suđenje – logo">
+
+<link rel="icon" type="image/png" href="https://i.imgur.com/TMWFtd5.png">
+<link rel="apple-touch-icon" href="https://i.imgur.com/TMWFtd5.png">
+
+<link rel="preload" as="fetch" href="data/aktivna.json" crossorigin>
+<link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://i.imgur.com" crossorigin>
+<link rel="preconnect" href="https://hnl.hr" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="https://i.imgur.com/TMWFtd5.png" fetchpriority="high">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+
+<link rel="stylesheet" href="styles.css">
+
+<script>
+  (function() {
+    try {
+      var theme = localStorage.getItem('posteno_sudenje_theme');
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebSite", "@id": "https://postenosudenje.com/#website", "url": "https://postenosudenje.com/", "name": "Pošteno suđenje", "inLanguage": "hr-HR", "publisher": { "@id": "https://postenosudenje.com/#org" } },
+    { "@type": "Organization", "@id": "https://postenosudenje.com/#org", "name": "Pošteno suđenje", "url": "https://postenosudenje.com/",
+      "logo": { "@type": "ImageObject", "url": "https://i.imgur.com/TMWFtd5.png" },
+      "sameAs": ["https://www.youtube.com/@postenosudenje", "https://ko-fi.com/postenosudenje"] },
+    { "@type": "Dataset", "name": "Statistika suđenja u SuperSport HNL-u", "url": "https://postenosudenje.com/", "inLanguage": "hr",
+      "description": "Utakmice SuperSport HNL-a s podacima o sucima, žutim i crvenim kartonima, penalima i VAR odlukama po sezonama.",
+      "keywords": ["HNL", "suci", "kartoni", "penali", "VAR"], "isAccessibleForFree": true,
+      "temporalCoverage": "2025-07-01/..", "creator": { "@id": "https://postenosudenje.com/#org" },
+      "distribution": [
+        { "@type": "DataDownload", "encodingFormat": "application/json", "name": "Sezona 2026/27", "contentUrl": "https://postenosudenje.com/data/aktivna.json" },
+        { "@type": "DataDownload", "encodingFormat": "application/json", "name": "Sezona 2025/26", "contentUrl": "https://postenosudenje.com/data/2025-26.json" }
+      ] }
+  ]
+}
+</script>
+</head>
+<body>
+
+<noscript><p style="padding:1rem;text-align:center">Za prikaz statistike potrebno je uključiti JavaScript.</p></noscript>
+<a href="#main-content" class="skip-link">Preskoči na glavni sadržaj</a>
+
+<div class="container">
+
+  <header class="header-center" role="banner">
+    <img src="https://i.imgur.com/TMWFtd5.png"
+         alt="Pošteno suđenje – logo"
+         class="site-logo" width="200" height="200"
+         loading="eager" decoding="async" fetchpriority="high">
+
+    <nav class="social-icons" aria-label="Društvene mreže">
+      <a href="https://www.youtube.com/@postenosudenje" target="_blank" rel="noopener noreferrer"
+         class="social-icon youtube-icon" title="YouTube kanal" aria-label="YouTube kanal">
+        <i class="fab fa-youtube" aria-hidden="true"></i>
+      </a>
+      <a href="https://ko-fi.com/postenosudenje" target="_blank" rel="noopener noreferrer"
+         class="social-icon coffee-icon" title="Buy Me a Coffee" aria-label="Buy Me a Coffee">
+        <i class="fas fa-mug-hot" aria-hidden="true"></i>
+      </a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Promijeni temu" title="Promijeni temu">
+        <i class="fas fa-moon icon-moon" aria-hidden="true"></i>
+        <i class="fas fa-sun icon-sun" aria-hidden="true"></i>
+      </button>
+    </nav>
+  </header>
+
+  <!-- WRAPPER ZA MENUE -->
+  <div class="menu-wrapper">
+    <!-- Glavni menu -->
+    <nav class="main-menu" id="mainMenu" role="navigation" aria-label="Glavna navigacija">
+      <button class="menu-item active" data-section="pregled" type="button">
+        <i class="fas fa-clipboard-list" aria-hidden="true"></i> Pregled
+      </button>
+      <button class="menu-item" data-section="statistika" type="button">
+        <i class="fas fa-chart-pie" aria-hidden="true"></i> Statistika
+      </button>
+      <button class="menu-item" data-section="utakmice" type="button">
+        <i class="fas fa-futbol" aria-hidden="true"></i> Utakmice
+      </button>
+      <button class="menu-item" data-section="usporedba" type="button">
+        <i class="fas fa-code-compare" aria-hidden="true"></i> Usporedba
+      </button>
+    </nav>
+
+    <!-- Season menu (Drop-down stil) -->
+    <nav class="main-menu season-menu" id="seasonPicker" role="navigation" aria-label="Odabir sezone">
+      <button type="button" class="menu-item" data-season="2025-26">
+        <i class="fas fa-calendar" aria-hidden="true"></i> 2025/26
+      </button>
+      <button type="button" class="menu-item" data-season="AKTIVNA">
+        <i class="fas fa-calendar-check" aria-hidden="true"></i> 2026/27
+      </button>
+      <button type="button" class="menu-item" data-season="UKUPNO">
+        <i class="fas fa-layer-group" aria-hidden="true"></i> Sve sezone
+      </button>
+    </nav>
+  </div>
+
+  <section class="hero-intro" aria-label="Uvod">
+    <h1 class="hero-intro-title">
+      <i class="fas fa-balance-scale" aria-hidden="true"></i>
+      Analiza suđenja u HNL-u
+    </h1>
+    <p class="hero-intro-text">
+      <strong>Pošteno suđenje</strong> prati sudačke odluke u SuperSport HNL-u — kartone, penale i VAR.
+      Klikni na klub ili suca za detalje.
+    </p>
+    <div class="hero-chips" id="heroChips">
+      <span class="hero-chip"><i class="fas fa-futbol" aria-hidden="true"></i> Učitavanje…</span>
+    </div>
+  </section>
+
+  <div id="skeleton" class="summary-cards" aria-hidden="true" role="status">
+    <div class="card" style="height:90px;opacity:0.3;"></div>
+    <div class="card" style="height:90px;opacity:0.3;"></div>
+    <div class="card" style="height:90px;opacity:0.3;"></div>
+    <div class="card" style="height:90px;opacity:0.3;"></div>
+  </div>
+
+  <div id="errorBox" class="error" style="display:none;" role="alert"></div>
+
+  <main id="main-content" role="main">
+  <div id="app" style="display:none;">
+
+    <!-- PREGLED -->
+    <section id="section-pregled" class="section-panel active">
+
+      <h2 class="section-title">
+        <i class="fas fa-chart-bar" aria-hidden="true"></i> Sažetak lige
+      </h2>
+      <div class="summary-cards" id="summaryCards"></div>
+
+      <h2 class="section-title"><i class="fas fa-calculator" aria-hidden="true"></i> Ukupni zbroj po klubovima</h2>
+      <p class="table-info">
+        <i class="fas fa-info-circle" aria-hidden="true"></i>
+        <span><strong>Napomena:</strong> U slučaju drugog žutog, odnosno isključujućeg crvenog kartona, brišu se žuti kartoni i pretvaraju u 1 crveni.</span>
+      </p>
+      <div class="table-wrapper">
+        <table id="klubTablica" aria-label="Tablica odluka po klubovima">
+          <thead>
+            <tr>
+              <th scope="col">Naziv kluba</th>
+              <th scope="col" class="sortable" data-key="zuti"><span class="karton-ikona zuti" aria-hidden="true"></span> Žuti <span class="arrow">▲▼</span></th>
+              <th scope="col" class="sortable" data-key="crveni"><span class="karton-ikona crveni" aria-hidden="true"></span> Crveni <span class="arrow">▲▼</span></th>
+              <th scope="col" class="sortable" data-key="penal"><i class="fas fa-futbol th-icon blue" aria-hidden="true"></i> Penal <span class="arrow">▲▼</span></th>
+              <th scope="col" class="sortable" data-key="vp"><i class="fas fa-video th-icon green" aria-hidden="true"></i> VAR+ <span class="arrow">▲▼</span></th>
+              <th scope="col" class="sortable" data-key="vpo"><i class="fas fa-video-slash th-icon muted" aria-hidden="true"></i> VAR− <span class="arrow">▲▼</span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title">
+        <i class="fas fa-chart-line" aria-hidden="true"></i> Žuti kartoni po kolu
+      </h2>
+      <div class="chart-wrapper">
+        <canvas id="zutiChart" aria-label="Grafikon žutih kartona po kolu" role="img"></canvas>
+      </div>
+    </section>
+
+    <!-- STATISTIKA -->
+    <section id="section-statistika" class="section-panel">
+      <h2 class="section-title" style="margin-top:0;">
+        <i class="fas fa-user-tie" aria-hidden="true"></i> Pregled po sucu
+      </h2>
+      <div class="selector">
+        <label for="sudacSezonaSelect"><i class="fas fa-calendar-alt" aria-hidden="true"></i> Sezona:</label>
+        <div class="modern-select">
+          <select id="sudacSezonaSelect" aria-label="Odabir sezone za suca">
+            <option value="AKTIVNA">2026/27</option>
+            <option value="2025-26">2025/26</option>
+            <option value="UKUPNO">Sve sezone</option>
+          </select>
+        </div>
+        <label for="sudacInput" style="margin-left:0.5rem;"><i class="fas fa-search" aria-hidden="true"></i> Odaberi suca:</label>
+        <div class="combobox" id="sudacCombobox">
+          <input type="text" id="sudacInput"
+                 placeholder="Upiši ime ili odaberi…"
+                 autocomplete="off"
+                 role="combobox"
+                 aria-expanded="false"
+                 aria-autocomplete="list">
+          <div class="combobox-list" id="sudacComboboxList" role="listbox"></div>
+        </div>
+      </div>
+      <div id="sudacStats" class="sudac-stats" aria-live="polite">
+        <h3 id="sudacIme"></h3>
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="modal-section" style="margin-top:1.8rem; border-top:1px solid var(--border); padding-top:1.4rem;">
+          <div class="modal-section-title">
+            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+            Odluke po klubu
+          </div>
+          <div id="sudacKluboviList" class="modal-list"></div>
+        </div>
+      </div>
+
+      <h2 class="section-title"><i class="fas fa-shield-alt" aria-hidden="true"></i> Pregled po klubu</h2>
+      <div class="selector">
+        <label for="klubSezonaSelect"><i class="fas fa-calendar-alt" aria-hidden="true"></i> Sezona:</label>
+        <div class="modern-select">
+          <select id="klubSezonaSelect" aria-label="Odabir sezone za klub">
+            <option value="AKTIVNA">2026/27</option>
+            <option value="2025-26">2025/26</option>
+            <option value="UKUPNO">Sve sezone</option>
+          </select>
+        </div>
+        <label for="klubInput" style="margin-left:0.5rem;"><i class="fas fa-search" aria-hidden="true"></i> Odaberi klub:</label>
+        <div class="combobox" id="klubCombobox">
+          <input type="text" id="klubInput"
+                 placeholder="Upiši klub ili odaberi…"
+                 autocomplete="off"
+                 role="combobox"
+                 aria-expanded="false"
+                 aria-autocomplete="list">
+          <div class="combobox-list" id="klubComboboxList" role="listbox"></div>
+        </div>
+      </div>
+      <div id="klubStats" class="klub-stats" aria-live="polite">
+        <h3 id="klubIme"></h3>
+        <div class="stats-grid" id="klubStatsGrid"></div>
+
+        <div class="modal-section" style="margin-top:1.8rem; border-top:1px solid var(--border); padding-top:1.4rem;">
+          <div class="modal-section-title">
+            <i class="fas fa-user-tie" aria-hidden="true"></i>
+            Suci koji su sudili ovom klubu
+          </div>
+          <div id="klubSuciList" class="modal-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- UTAKMICE -->
+    <section id="section-utakmice" class="section-panel">
+      <h2 class="section-title" style="margin-top:0;">
+        <i class="fas fa-futbol" aria-hidden="true"></i> Utakmice po kolima
+      </h2>
+      <div class="selector">
+        <label for="koloSelect"><i class="fas fa-calendar-alt" aria-hidden="true"></i> Odaberi kolo:</label>
+        <div class="modern-select">
+          <select id="koloSelect" aria-label="Odabir kola"></select>
+        </div>
+      </div>
+      <div class="matches-grid" id="matchesGrid"></div>
+    </section>
+
+    <!-- USPOREDBA -->
+    <section id="section-usporedba" class="section-panel">
+      <h2 class="section-title" style="margin-top:0;">
+        <i class="fas fa-code-compare" aria-hidden="true"></i> Usporedba sudaca
+      </h2>
+      <div class="usporedba-wrapper">
+        <div class="usporedba-selectors">
+          <div class="usporedba-selector">
+            <label for="usporedbaSudacASezona"><i class="fas fa-calendar-alt"></i> Sezona A</label>
+            <div class="modern-select">
+              <select id="usporedbaSudacASezona" aria-label="Sezona za suca A">
+                <option value="AKTIVNA">2026/27</option>
+                <option value="2025-26">2025/26</option>
+                <option value="UKUPNO">Sve sezone</option>
+              </select>
+            </div>
+            <label for="usporedbaSudacA" style="margin-top:0.6rem;"><i class="fas fa-user-tie"></i> Sudac A</label>
+            <div class="combobox" id="usporedbaSudacACombobox">
+              <input type="text" id="usporedbaSudacA" placeholder="Odaberi suca A…" autocomplete="off">
+              <div class="combobox-list" id="usporedbaSudacAList" role="listbox"></div>
+            </div>
+          </div>
+          <div class="usporedba-vs">VS</div>
+          <div class="usporedba-selector">
+            <label for="usporedbaSudacBSezona"><i class="fas fa-calendar-alt"></i> Sezona B</label>
+            <div class="modern-select">
+              <select id="usporedbaSudacBSezona" aria-label="Sezona za suca B">
+                <option value="AKTIVNA">2026/27</option>
+                <option value="2025-26">2025/26</option>
+                <option value="UKUPNO">Sve sezone</option>
+              </select>
+            </div>
+            <label for="usporedbaSudacB" style="margin-top:0.6rem;"><i class="fas fa-user-tie"></i> Sudac B</label>
+            <div class="combobox" id="usporedbaSudacBCombobox">
+              <input type="text" id="usporedbaSudacB" placeholder="Odaberi suca B…" autocomplete="off">
+              <div class="combobox-list" id="usporedbaSudacBList" role="listbox"></div>
+            </div>
+          </div>
+        </div>
+        <div id="usporedbaSudacRezultat">
+          <div class="usporedba-prazno">
+            <i class="fas fa-users"></i>
+            Odaberi dva suca za usporedbu
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-title">
+        <i class="fas fa-code-compare" aria-hidden="true"></i> Usporedba klubova
+      </h2>
+      <div class="usporedba-wrapper">
+        <div class="usporedba-selectors">
+          <div class="usporedba-selector">
+            <label for="usporedbaKlubASezona"><i class="fas fa-calendar-alt"></i> Sezona A</label>
+            <div class="modern-select">
+              <select id="usporedbaKlubASezona" aria-label="Sezona za klub A">
+                <option value="AKTIVNA">2026/27</option>
+                <option value="2025-26">2025/26</option>
+                <option value="UKUPNO">Sve sezone</option>
+              </select>
+            </div>
+            <label for="usporedbaKlubA" style="margin-top:0.6rem;"><i class="fas fa-shield-alt"></i> Klub A</label>
+            <div class="combobox" id="usporedbaKlubACombobox">
+              <input type="text" id="usporedbaKlubA" placeholder="Odaberi klub A…" autocomplete="off">
+              <div class="combobox-list" id="usporedbaKlubAList" role="listbox"></div>
+            </div>
+          </div>
+          <div class="usporedba-vs">VS</div>
+          <div class="usporedba-selector">
+            <label for="usporedbaKlubBSezona"><i class="fas fa-calendar-alt"></i> Sezona B</label>
+            <div class="modern-select">
+              <select id="usporedbaKlubBSezona" aria-label="Sezona za klub B">
+                <option value="AKTIVNA">2026/27</option>
+                <option value="2025-26">2025/26</option>
+                <option value="UKUPNO">Sve sezone</option>
+              </select>
+            </div>
+            <label for="usporedbaKlubB" style="margin-top:0.6rem;"><i class="fas fa-shield-alt"></i> Klub B</label>
+            <div class="combobox" id="usporedbaKlubBCombobox">
+              <input type="text" id="usporedbaKlubB" placeholder="Odaberi klub B…" autocomplete="off">
+              <div class="combobox-list" id="usporedbaKlubBList" role="listbox"></div>
+            </div>
+          </div>
+        </div>
+        <div id="usporedbaKlubRezultat">
+          <div class="usporedba-prazno">
+            <i class="fas fa-shield-alt"></i>
+            Odaberi dva kluba za usporedbu
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  </main>
+
+  <footer class="seo-footer-text" role="contentinfo">
+    <h2>O platformi Pošteno suđenje</h2>
+    <p>
+      <strong>Pošteno suđenje</strong> okuplja i analizira podatke o sudačkim odlukama u
+      <strong>SuperSport HNL-u</strong> – hrvatskoj nogometnoj ligi. Pratimo žute i crvene kartone,
+      dosuđene penale te VAR intervencije po sucu, klubu i kolu.
+    </p>
+    <p>
+      Za suradnju pišite nam na
+      <a href="mailto:postenosudenje@gmail.com">postenosudenje@gmail.com</a>.
+    </p>
+    <div class="footer-support">
+      <a href="https://ko-fi.com/postenosudenje" target="_blank" rel="noopener noreferrer" class="bmc-button">
+        <i class="fas fa-mug-hot" aria-hidden="true"></i> Buy Me a Coffee
+      </a>
+      <a href="https://www.youtube.com/@postenosudenje" target="_blank" rel="noopener noreferrer" class="yt-button">
+        <i class="fab fa-youtube" aria-hidden="true"></i> YouTube kanal
+      </a>
+    </div>
+  </footer>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">
+        <div class="modal-title-icon" id="modalIcon">
+          <i class="fas fa-shield-alt" aria-hidden="true"></i>
+        </div>
+        <div class="modal-title-text">
+          <h2 id="modalTitle">Naziv</h2>
+          <div class="modal-subtitle" id="modalSubtitle">Podnaslov</div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn" id="modalCopyBtn" type="button" aria-label="Kopiraj link" title="Kopiraj link">
+          <i class="fas fa-link" aria-hidden="true"></i>
+        </button>
+        <button class="modal-btn export-btn" id="modalCsvBtn" type="button" aria-label="Preuzmi CSV" title="Preuzmi CSV">
+          <i class="fas fa-file-csv" aria-hidden="true"></i>
+        </button>
+        <button class="modal-btn close-btn" id="modalClose" type="button" aria-label="Zatvori modal">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-close-sticky">
+      <button type="button" onclick="closeModal()">
+        <i class="fas fa-times" aria-hidden="true"></i> Zatvori
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+<script src="script.js" defer></script>
+
+<noscript>
+  <div style="padding:2rem; text-align:center; background:#161616; border-radius:16px; margin-top:2rem; color:#f5f5f5;">
+    <h2 style="color:#f5c518; margin-bottom:1rem;">JavaScript je potreban</h2>
+    <p>Za pregled interaktivne statistike suđenja u HNL-u potrebno je omogućiti JavaScript.</p>
+  </div>
+</noscript>
+
+</body>
+</html>
